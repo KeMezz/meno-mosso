@@ -1,79 +1,52 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { FaPlay, FaStop } from "react-icons/fa";
+import { FaPlay } from "react-icons/fa";
 
 const Container = styled.main`
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  gap: 50px;
+  justify-content: center;
+  gap: 16vh;
+  align-items: center;
 `;
 
-const Dots = styled.section`
+const Indicator = styled.section`
   display: flex;
-  gap: 32px;
+  gap: 30px;
 `;
 
-const Dot = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: #fff;
-  border-radius: 50%;
-  border: solid 5px #000;
-  &.active {
-    background-color: #111;
-  }
+const Circle = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: #000;
 `;
 
-const Control = styled.section``;
+const BPMText = styled.h1`
+  font-size: 160px;
+  font-weight: 900;
+  color: #222;
+`;
 
-const Play = styled.button`
-  background-color: transparent;
-  border: none;
+const Buttons = styled.section`
   font-size: 50px;
-  cursor: pointer;
 `;
 
 function App() {
-  const [tempo, setTempo] = useState([0, 0, 0, 0]);
-  const [timer, setTimer] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (!isPlaying) {
-      return;
-    }
-    const interval = setInterval(() => {
-      setTimer((prev) => prev + 1);
-      setTempo(() => {
-        if (timer === 3) setTimer(0);
-        let tempoCopy = [0, 0, 0, 0];
-        tempoCopy[timer] = 1;
-        return tempoCopy;
-      });
-      clearInterval(interval);
-    }, 500);
-  }, [tempo, isPlaying]);
-
+  const [bpm, setBpm] = useState(140);
   return (
     <Container>
-      <Dots>
-        {tempo.map((item, index) => (
-          <Dot key={index} className={item === 1 ? "active" : undefined} />
+      <Indicator>
+        {[1, 2, 3, 4].map((item) => (
+          <Circle key={item} />
         ))}
-      </Dots>
-      <Control>
-        <Play
-          onClick={() => {
-            setIsPlaying((prev) => !prev);
-          }}
-        >
-          {isPlaying ? <FaStop /> : <FaPlay />}
-        </Play>
-      </Control>
+      </Indicator>
+      <BPMText>{bpm}</BPMText>
+      <Buttons>
+        <FaPlay />
+      </Buttons>
     </Container>
   );
 }
